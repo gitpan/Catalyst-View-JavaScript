@@ -7,7 +7,7 @@ use utf8;
 use JavaScript::Minifier::XS qw(minify);
 use base qw|Catalyst::View|;
 __PACKAGE__->mk_accessors(qw(compress disable_if_debug stash key output _cache copyright));
-our $VERSION = '0.99';
+our $VERSION = '0.991';
 $VERSION = eval $VERSION;
 
 =head1 NAME
@@ -31,6 +31,9 @@ The content type is set to C<text/javascript>.
 =head2 cache
 
 If C<$c> is able to cache (i. e. C<< if $c->can('cache') >>) the value of C<cache> is used as key to cache the JavaScript output.
+This method returns the view so you can invoke it like this:
+
+  $c->detach( $c->view('JavaScript')->cache('unique-cache-key') );
 
 =head2 compress
 

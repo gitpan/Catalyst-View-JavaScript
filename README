@@ -1,52 +1,62 @@
-Catalyst-View-JavaScript
+NAME
+    Catalyst::View::JavaScript - Cache and/or compress JavaScript output
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+VERSION
+    Version 0.99
 
-A README file is required for CPAN modules since CPAN extracts the README
-file from a module distribution so that people browsing the archive
-can use it to get an idea of the module's uses. It is usually a good idea
-to provide version information here so that people can decide whether
-fixes for the module are worth downloading.
+SYNOPSIS
+    This module fetches JavaScript either from the stash or from
+    "$c->output". By default the JavaScript code is read from
+    "$c->stash->{js}" and compressed. The content type is set to
+    "text/javascript".
 
+METHODS
+  cache
+    If $c is able to cache (i. e. "if $c->can('cache')") the value of
+    "cache" is used as key to cache the JavaScript output. This method
+    returns the view so you can invoke it like this:
 
-INSTALLATION
+      $c->detach( $c->view('JavaScript')->cache('unique-cache-key') );
 
-To install this module, run the following commands:
+  compress
+    Set this to a true value to enable compression of the code. See
+    JavaScript::Minifier::XS for more information on how this minification
+    works. Defaults to 1.
 
-	perl Makefile.PL
-	make
-	make test
-	make install
+  copyright
+    This string will be displayed on the top of the output enclosed in a
+    commentary tag.
 
-SUPPORT AND DOCUMENTATION
+  disable_if_debug
+    If you set the debug flag on your application caching and compressing is
+    disabled. Defaults to 0.
 
-After installing, you can find documentation for this module with the
-perldoc command.
+  output
+    If this is set to a true value this module fetches the JavaScript code
+    from "$c->output" and ignores the value of "stash". Defaults to 0.
 
-    perldoc Catalyst::View::JavaScript
+  key
+    This module looks in the stash for this value for JavaScript if "stash"
+    is enabled. Defaults to "js".
 
-You can also look for information at:
+  stash
+    Set this to a true value if the JavaScript code is on the stash. Set the
+    stash value with "key". Defaults to 1.
 
-    RT, CPAN's request tracker
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Catalyst-View-JavaScript
+AUTHOR
+    Moritz Onken, "<onken at houseofdesign.de>"
 
-    AnnoCPAN, Annotated CPAN documentation
-        http://annocpan.org/dist/Catalyst-View-JavaScript
+BUGS
+    Please report any bugs or feature requests to
+    "bug-catalyst-view-javascript at rt.cpan.org", or through the web
+    interface at
+    <http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Catalyst-View-JavaScript
+    >. I will be notified, and then you'll automatically be notified of
+    progress on your bug as I make changes.
 
-    CPAN Ratings
-        http://cpanratings.perl.org/d/Catalyst-View-JavaScript
+COPYRIGHT & LICENSE
+    Copyright 2009 Moritz Onken, all rights reserved.
 
-    Search CPAN
-        http://search.cpan.org/dist/Catalyst-View-JavaScript
-
-
-COPYRIGHT AND LICENCE
-
-Copyright (C) 2007 Moritz Onken
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+    This program is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
 

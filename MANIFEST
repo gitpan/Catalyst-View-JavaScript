@@ -1,15 +1,12 @@
-.cvsignore
-.DS_Store
 Changes
-lib/Catalyst/View/JavaScript.pm
+LICENSE
+MANIFEST
+META.yml
 Makefile.PL
-MANIFEST			This list of files
 README
-t/00-load.t
+dist.ini
+lib/Catalyst/View/JavaScript.pm
 t/01-tests.t
-t/boilerplate.t
 t/lib/TestApp.pm
 t/lib/TestApp/Controller/Root.pm
 t/lib/TestApp/View/JavaScript.pm
-t/pod.t
-META.yml                                 Module meta-data (added by MakeMaker)
