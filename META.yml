@@ -13,4 +13,4 @@ requires:
   Class::C3: 0
   JavaScript::Minifier::XS: '> 0'
   Test::WWW::Mechanize::Catalyst: '> 0'
-version: 0.991
+version: 0.992

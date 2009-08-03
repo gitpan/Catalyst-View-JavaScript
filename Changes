@@ -1,5 +1,8 @@
 Revision history for Catalyst-View-JavaScript
 
+0.992 2009-08-03
+   - removed parent
+
 0.991 2009-07-29
    - fixed test errors
    - switched to Dist::Zilla

@@ -7,7 +7,7 @@ use utf8;
 use JavaScript::Minifier::XS qw(minify);
 use base qw|Catalyst::View|;
 __PACKAGE__->mk_accessors(qw(compress disable_if_debug stash key output _cache copyright));
-our $VERSION = '0.991';
+our $VERSION = '0.992';
 $VERSION = eval $VERSION;
 
 =head1 NAME
@@ -16,9 +16,7 @@ Catalyst::View::JavaScript - Cache and/or compress JavaScript output
 
 =head1 VERSION
 
-Version 0.99
-
-=cut
+version 0.992
 
 =head1 SYNOPSIS
 
