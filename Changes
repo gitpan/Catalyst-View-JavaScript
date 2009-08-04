@@ -1,5 +1,10 @@
 Revision history for Catalyst-View-JavaScript
 
+0.993 2009-08-04
+   - typo in 01-test.t
+   - disable_if_debug defaults to 1 now
+   - pod fixes
+
 0.992 2009-08-03
    - removed parent
 

@@ -11,6 +11,6 @@ name: Catalyst-View-JavaScript
 requires:
   Catalyst::Runtime: 0
   Class::C3: 0
-  JavaScript::Minifier::XS: '> 0'
-  Test::WWW::Mechanize::Catalyst: '> 0'
-version: 0.992
+  JavaScript::Minifier::XS: 0
+  Test::WWW::Mechanize::Catalyst: 0
+version: 0.993

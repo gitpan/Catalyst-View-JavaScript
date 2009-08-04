@@ -4,9 +4,13 @@ use Test::More tests => 11;
 
 use Catalyst::View::JavaScript;
 
+BEGIN {
+$ENV{TESTAPP_DEBUG} = 0;
+}
+
 use lib qw(t/lib);
 
-use ok 'TestApp';
+use_ok 'TestApp';
 
 use Test::WWW::Mechanize::Catalyst 'TestApp';
 my $mech = Test::WWW::Mechanize::Catalyst->new;

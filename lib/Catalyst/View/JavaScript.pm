@@ -6,9 +6,73 @@ use Carp;
 use utf8;
 use JavaScript::Minifier::XS qw(minify);
 use base qw|Catalyst::View|;
-__PACKAGE__->mk_accessors(qw(compress disable_if_debug stash key output _cache copyright));
-our $VERSION = '0.992';
+__PACKAGE__->mk_accessors(
+    qw(compress disable_if_debug stash key output _cache copyright));
+our $VERSION = '0.993';
 $VERSION = eval $VERSION;
+
+sub new {
+    my $self = shift->next::method(@_);
+    my ( $c, $arguments ) = @_;
+    my %config = (
+        compress         => 1,
+        stash            => 1,
+        key              => "js",
+        disable_if_debug => 1,
+        %$arguments
+    );
+    for my $field ( keys %config ) {
+        if ( $self->can($field) ) {
+            $self->$field( $config{$field} );
+        }
+        else {
+            $c->log->debug("Unknown config parameter '$field'");
+        }
+    }
+    return $self;
+}
+
+sub cache {
+    my $self = shift;
+    $self->_cache(@_);
+    return $self;
+}
+
+sub process {
+    my ( $self, $c ) = @_;
+    my $data   = '';
+    my $cached = 0;
+    if ( $self->disable_if_debug && $c->debug ) {
+        $self->_cache('');
+        $self->compress(0);
+    }
+    if (   $self->_cache
+        && $c->can('cache')
+        && ( $data = $c->cache->get( $self->_cache ) ) )
+    {
+        $cached = 1;
+    }
+    elsif ( $self->output ) {
+        $data = $c->res->output;
+    }
+    elsif ( $self->stash && $self->key ) {
+        $data = $c->stash->{ $self->key };
+    }
+    unless ($cached) {
+        $data = minify($data) if ( $self->compress );
+        $data = "/* " . $self->copyright . " */\n" . $data
+          if ( $self->copyright );
+    }
+
+    $c->res->content_type("text/javascript");
+    $c->res->output($data);
+    $c->cache->set( $self->_cache, $data )
+      if ( $c->can('cache') );
+}
+
+1;
+
+__END__
 
 =head1 NAME
 
@@ -16,13 +80,15 @@ Catalyst::View::JavaScript - Cache and/or compress JavaScript output
 
 =head1 VERSION
 
-version 0.992
+version 0.993
 
 =head1 SYNOPSIS
 
 This module fetches JavaScript either from the stash or from C<< $c->output >>. 
 By default the JavaScript code is read from C<< $c->stash->{js} >> and compressed.
 The content type is set to C<text/javascript>.
+
+B<By default this view will not compress and/or cache if your application is in the debug mode.>
 
 =head1 METHODS
 
@@ -43,7 +109,7 @@ This string will be displayed on the top of the output enclosed in a commentary 
 
 =head2 disable_if_debug
 
-If you set the debug flag on your application caching and compressing is disabled. Defaults to 0.
+If you set the debug flag on your application caching and compressing is disabled. Defaults to 1.
 
 =head2 output
 
@@ -57,70 +123,15 @@ This module looks in the stash for this value for JavaScript if L</stash> is ena
 
 Set this to a true value if the JavaScript code is on the stash. Set the stash value with L</key>. Defaults to C<1>.
 
-=cut
-
-sub new {
-	my $self = shift->next::method(@_);
-	my ( $c, $arguments ) = @_;
-	my %config = ( compress => 1, stash => 1, key => "js", %$arguments );
-	for my $field ( keys %config ) {
-		if ( $self->can($field) ) {
-			$self->$field( $config{$field} );
-		} else {
-			$c->log->debug("Unknown config parameter '$field'");
-		}
-	}
-	return $self;
-}
-
-sub cache {
-	my $self = shift;
-	$self->_cache(@_);
-	return $self;
-}
-
-sub process {
-	my ( $self, $c ) = @_;
-	my $data = '';
-	my $cached = 0;
-	if($self->disable_if_debug && $c->debug) {
-		$self->_cache('');
-		$self->compress(0);
-	}
-	if ( $self->_cache && 
-		 $c->can('cache') &&
-		 ( $data = $c->cache->get($self->_cache) ) ) {
-		$cached = 1;
-	} elsif ( $self->output ) {
-		$data = $c->res->output;
-	} elsif ( $self->stash && $self->key ) {
-		$data = $c->stash->{ $self->key };
-	}
-	unless ($cached) {
-		$data = minify($data) if ( $self->compress );
-		$data = "/* " . $self->copyright . " */\n" . $data
-		  if ( $self->copyright );
-	}
-	
-	$c->res->content_type("text/javascript");
-	$c->res->output($data);
-	$c->cache->set($self->_cache, $data)
-	  if($c->can('cache'));
-}
-
 =head1 AUTHOR
 
-Moritz Onken, C<< <onken at houseofdesign.de> >>
+Moritz Onken, C<< <onken at netcubed.de> >>
 
 =head1 BUGS
 
 Please report any bugs or feature requests to C<bug-catalyst-view-javascript at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Catalyst-View-JavaScript>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
-
-
 
 =head1 COPYRIGHT & LICENSE
 
@@ -131,4 +142,3 @@ under the same terms as Perl itself.
 
 
 =cut
-1;    # End of Catalyst::View::JavaScript
