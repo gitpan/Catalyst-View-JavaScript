@@ -9,9 +9,9 @@ WriteMakefile(
   NAME      => 'Catalyst::View::JavaScript',
   AUTHOR    => 'Moritz\ Onken\ \<onken\@netcubed\.de\>',
   ABSTRACT  => 'Cache\ and\/or\ compress\ JavaScript\ output',
-  VERSION   => '0.993',
+  VERSION   => '0.994',
   EXE_FILES => [ qw() ],
-  (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
+  (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'bsd') : ()),
   PREREQ_PM    => {
     "JavaScript::Minifier::XS" => '0',
     "Test::WWW::Mechanize::Catalyst" => '0',

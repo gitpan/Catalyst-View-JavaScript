@@ -1,4 +1,6 @@
 package Catalyst::View::JavaScript;
+our $VERSION = '0.994';
+
 use warnings;
 use strict;
 use Class::C3;
@@ -8,8 +10,6 @@ use JavaScript::Minifier::XS qw(minify);
 use base qw|Catalyst::View|;
 __PACKAGE__->mk_accessors(
     qw(compress disable_if_debug stash key output _cache copyright));
-our $VERSION = '0.993';
-$VERSION = eval $VERSION;
 
 sub new {
     my $self = shift->next::method(@_);
@@ -22,6 +22,7 @@ sub new {
         %$arguments
     );
     for my $field ( keys %config ) {
+        next if $field =~ /^catalyst/;
         if ( $self->can($field) ) {
             $self->$field( $config{$field} );
         }
@@ -80,7 +81,7 @@ Catalyst::View::JavaScript - Cache and/or compress JavaScript output
 
 =head1 VERSION
 
-version 0.993
+version 0.994
 
 =head1 SYNOPSIS
 

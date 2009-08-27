@@ -2,7 +2,7 @@ NAME
     Catalyst::View::JavaScript - Cache and/or compress JavaScript output
 
 VERSION
-    version 0.993
+    version 0.994
 
 SYNOPSIS
     This module fetches JavaScript either from the stash or from

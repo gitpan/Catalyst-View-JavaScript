@@ -10,3 +10,5 @@ t/01-tests.t
 t/lib/TestApp.pm
 t/lib/TestApp/Controller/Root.pm
 t/lib/TestApp/View/JavaScript.pm
+t/release-pod-coverage.t
+t/release-pod-syntax.t
