@@ -1,9 +1,8 @@
 package Catalyst::View::JavaScript;
-our $VERSION = '0.994';
-
+our $VERSION = '0.995';
 use warnings;
 use strict;
-use Class::C3;
+use MRO::Compat;
 use Carp;
 use utf8;
 use JavaScript::Minifier::XS qw(minify);
@@ -27,7 +26,7 @@ sub new {
             $self->$field( $config{$field} );
         }
         else {
-            $c->log->debug("Unknown config parameter '$field'");
+            $c->log->warn("Unknown config parameter '$field'");
         }
     }
     return $self;
@@ -68,7 +67,7 @@ sub process {
     $c->res->content_type("text/javascript");
     $c->res->output($data);
     $c->cache->set( $self->_cache, $data )
-      if ( $c->can('cache') );
+      if ( $self->_cache && $c->can('cache') );
 }
 
 1;
@@ -81,7 +80,7 @@ Catalyst::View::JavaScript - Cache and/or compress JavaScript output
 
 =head1 VERSION
 
-version 0.994
+version 0.995
 
 =head1 SYNOPSIS
 

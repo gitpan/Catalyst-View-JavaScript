@@ -1,5 +1,8 @@
 Revision history for Catalyst-View-JavaScript
 
+0.995 2010-01-29
+   - use MRO::Compat instead of Class::C3 (#54094)
+
 0.994 2009-08-27
    - fixed catalyst warnings
 
